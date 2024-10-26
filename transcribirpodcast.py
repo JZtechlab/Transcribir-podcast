@@ -55,12 +55,21 @@ def transcribir_audio_por_bloques(audio_file, bloque_duracion=60, sr=16000):
         return None
 
 # Función para guardar la transcripción en un archivo de texto
-def guardar_transcripcion_en_texto(transcripcion, nombre_archivo_texto):
+def guardar_transcripcion_en_texto(transcripcion):
     try:
-        with open(nombre_archivo_texto, "w", encoding="utf-8") as file:
-            file.write("Transcripción del podcast:\n\n")
-            file.write(transcripcion)
-            print(f"Transcripción guardada en: {os.path.abspath(nombre_archivo_texto)}")
+        nombre_archivo_texto = filedialog.asksaveasfilename(
+            title="Guardar transcripción como",
+            defaultextension=".txt",
+            filetypes=[("Archivo de texto", "*.txt")]
+        )
+        
+        if nombre_archivo_texto:
+            with open(nombre_archivo_texto, "w", encoding="utf-8") as file:
+                file.write("Transcripción del podcast:\n\n")
+                file.write(transcripcion)
+                print(f"Transcripción guardada en: {os.path.abspath(nombre_archivo_texto)}")
+        else:
+            print("No se seleccionó una ubicación para guardar el archivo.")
     except Exception as e:
         print(f"Error al guardar la transcripción en un archivo de texto: {e}")
 
@@ -75,8 +84,7 @@ def procesar_podcast(audio_file):
     print("Transcripción completada.")
 
     # Guardar la transcripción en un archivo de texto
-    nombre_archivo_texto = "C:/Users/jokin/OneDrive/Escritorio/python/podcast_transcrito.txt"
-    guardar_transcripcion_en_texto(transcripcion, nombre_archivo_texto)
+    guardar_transcripcion_en_texto(transcripcion)
 
 # Función principal para procesar el archivo
 def main():
